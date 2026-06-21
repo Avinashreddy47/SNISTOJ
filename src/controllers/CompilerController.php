@@ -4,12 +4,13 @@ namespace SNISTOJ\Controllers;
 
 use SNISTOJ\Services\CompilerService;
 use SNISTOJ\Utils\Logger;
+use SNISTOJ\Utils\Response;
 
 /**
  * Compiler Controller
  * Handles code compilation and execution
  */
-class CompilerController
+class CompilerController extends BaseController
 {
     private $compilerService;
 
@@ -20,46 +21,40 @@ class CompilerController
 
     public function index()
     {
-        include_once dirname(__DIR__) . '/views/compiler/index.php';
+        $this->render('compiler/index');
     }
 
     public function run()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            die('Method not allowed');
+        $this->requirePost();
+
+        $code = $this->post('code', '');
+        $language = $this->post('language', 'cpp');
+        $input = $this->post('input', '');
+
+        if (empty($code)) {
+            Response::badRequest('Code cannot be empty');
         }
 
         try {
-            $code = $_POST['code'] ?? '';
-            $language = $_POST['language'] ?? 'cpp';
-            $input = $_POST['input'] ?? '';
-
-            if (empty($code)) {
-                http_response_code(400);
-                return ['success' => false, 'message' => 'Code cannot be empty'];
-            }
-
             $result = $this->compilerService->compile($code, $language, $input);
 
             Logger::info('Code executed', [
-                'user_id' => $_SESSION['user_id'],
+                'user_id' => $this->getUserId(),
                 'language' => $language,
                 'status' => $result['status'] ?? 'unknown'
             ]);
 
-            return [
-                'success' => !$result['error'],
+            Response::success('Code executed', [
                 'output' => $result['output'] ?? '',
-                'error' => $result['message'] ?? '',
                 'execution_time' => $result['execution_time'] ?? 0,
-                'status' => $result['status'] ?? 'ERROR'
-            ];
+                'status' => $result['status'] ?? 'ERROR',
+                'error' => $result['message'] ?? ''
+            ]);
 
         } catch (\Exception $e) {
             Logger::error('Compilation failed', ['error' => $e->getMessage()]);
-            http_response_code(500);
-            return ['success' => false, 'message' => 'Compilation service error'];
+            Response::serverError('Compilation service error');
         }
     }
 }

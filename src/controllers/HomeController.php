@@ -6,15 +6,15 @@ namespace SNISTOJ\Controllers;
  * Home Controller
  * Handles home page
  */
-class HomeController
+class HomeController extends BaseController
 {
     public function index()
     {
-        if (isset($_SESSION['user_id'])) {
+        if ($this->isAuthenticated()) {
             header('Location: /problems');
             exit;
         }
 
-        include_once dirname(__DIR__) . '/views/home/index.php';
+        $this->render('home/index');
     }
 }

@@ -6,15 +6,15 @@ namespace SNISTOJ\Controllers;
  * Admin Controller
  * Handles admin operations
  */
-class AdminController
+class AdminController extends BaseController
 {
     public function dashboard()
     {
-        echo "Admin dashboard";
+        $this->render('admin/dashboard');
     }
 
     public function createProblem()
     {
-        echo "Problem created";
+        $this->render('admin/create-problem');
     }
 }

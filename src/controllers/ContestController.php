@@ -6,21 +6,21 @@ namespace SNISTOJ\Controllers;
  * Contest Controller
  * Handles contest-related operations
  */
-class ContestController
+class ContestController extends BaseController
 {
     public function index()
     {
-        echo "Contests list will be displayed here";
+        $this->render('contests/index');
     }
 
     public function show()
     {
-        $id = $_GET[0] ?? null;
-        echo "Contest detail: " . htmlspecialchars($id);
+        $id = $this->query(0);
+        $this->render('contests/show', ['id' => $id]);
     }
 
     public function register()
     {
-        echo "User registered for contest";
+        $this->render('contests/register');
     }
 }

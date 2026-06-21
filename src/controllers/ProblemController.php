@@ -6,21 +6,21 @@ namespace SNISTOJ\Controllers;
  * Problem Controller
  * Handles problem-related operations
  */
-class ProblemController
+class ProblemController extends BaseController
 {
     public function index()
     {
-        echo "Problems list will be displayed here";
+        $this->render('problems/index');
     }
 
     public function show()
     {
-        $id = $_GET[0] ?? null;
-        echo "Problem detail: " . htmlspecialchars($id);
+        $id = $this->query(0);
+        $this->render('problems/show', ['id' => $id]);
     }
 
     public function submit()
     {
-        echo "Problem submitted";
+        $this->render('problems/submit');
     }
 }
