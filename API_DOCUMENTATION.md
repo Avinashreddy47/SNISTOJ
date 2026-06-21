@@ -1,14 +1,17 @@
 # SNISTOJ API Documentation
 
 ## Overview
+
 SNISTOJ is a modern Online Judge System built with PHP 8.2 and following RESTful principles.
 
 ## Base URL
+
 ```
 http://localhost:8080
 ```
 
 ## Authentication
+
 All authenticated endpoints require user to be logged in via session.
 
 ---
@@ -18,10 +21,13 @@ All authenticated endpoints require user to be logged in via session.
 ### Authentication Endpoints
 
 #### Register User
+
 ```
 POST /register
 ```
+
 **Parameters:**
+
 - `username` (string, required) - 3-20 alphanumeric characters
 - `email` (string, required) - Valid email address
 - `password` (string, required) - Minimum 8 characters
@@ -29,6 +35,7 @@ POST /register
 - `csrf_token` (string, required) - CSRF token
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -37,15 +44,19 @@ POST /register
 ```
 
 #### Login User
+
 ```
 POST /login
 ```
+
 **Parameters:**
+
 - `username` (string, required)
 - `password` (string, required)
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -59,10 +70,13 @@ POST /login
 ```
 
 #### Logout
+
 ```
 GET /logout
 ```
+
 **Response:**
+
 - Redirects to home page
 
 ---
@@ -70,12 +84,15 @@ GET /logout
 ### User Endpoints
 
 #### Get User Profile
+
 ```
 GET /user/profile
 ```
+
 **Requires:** Authentication
 
 **Response:**
+
 ```json
 {
   "id": 1,
@@ -92,17 +109,21 @@ GET /user/profile
 ```
 
 #### Update User Profile
+
 ```
 POST /user/update
 ```
+
 **Requires:** Authentication
 
 **Parameters:**
+
 - `full_name` (string, optional)
 - `bio` (string, optional)
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -115,17 +136,21 @@ POST /user/update
 ### Problem Endpoints
 
 #### Get All Problems
+
 ```
 GET /problems?page=1&difficulty=easy&category=basic
 ```
+
 **Requires:** Authentication
 
 **Query Parameters:**
+
 - `page` (integer) - Page number (default: 1)
 - `difficulty` (string) - easy, medium, hard
 - `category` (string) - Problem category
 
 **Response:**
+
 ```json
 {
   "problems": [
@@ -149,12 +174,15 @@ GET /problems?page=1&difficulty=easy&category=basic
 ```
 
 #### Get Problem Details
+
 ```
 GET /problem/:id
 ```
+
 **Requires:** Authentication
 
 **Response:**
+
 ```json
 {
   "id": 1,
@@ -183,18 +211,22 @@ GET /problem/:id
 ```
 
 #### Submit Problem Solution
+
 ```
 POST /problem/submit
 ```
+
 **Requires:** Authentication
 
 **Parameters:**
+
 - `problem_id` (integer, required)
 - `code` (string, required)
 - `language` (string, required) - c, cpp, java, python
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -210,15 +242,19 @@ POST /problem/submit
 ### Contest Endpoints
 
 #### Get All Contests
+
 ```
 GET /contests?status=running
 ```
+
 **Requires:** Authentication
 
 **Query Parameters:**
+
 - `status` (string) - scheduled, running, ended
 
 **Response:**
+
 ```json
 {
   "contests": [
@@ -237,12 +273,15 @@ GET /contests?status=running
 ```
 
 #### Get Contest Details
+
 ```
 GET /contest/:id
 ```
+
 **Requires:** Authentication
 
 **Response:**
+
 ```json
 {
   "id": 1,
@@ -270,16 +309,20 @@ GET /contest/:id
 ```
 
 #### Register for Contest
+
 ```
 POST /contest/register
 ```
+
 **Requires:** Authentication
 
 **Parameters:**
+
 - `contest_id` (integer, required)
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -292,18 +335,22 @@ POST /contest/register
 ### Compiler Endpoints
 
 #### Run Code
+
 ```
 POST /compiler/run
 ```
+
 **Requires:** Authentication
 
 **Parameters:**
+
 - `code` (string, required)
 - `language` (string, required) - c, cpp, java, python
 - `input` (string, optional)
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -318,12 +365,15 @@ POST /compiler/run
 ### Admin Endpoints
 
 #### Get Admin Dashboard
+
 ```
 GET /admin/dashboard
 ```
+
 **Requires:** Authentication + Admin Role
 
 **Response:**
+
 ```json
 {
   "users_count": 1234,
@@ -335,12 +385,15 @@ GET /admin/dashboard
 ```
 
 #### Create Problem
+
 ```
 POST /admin/problem/create
 ```
+
 **Requires:** Authentication + Admin Role
 
 **Parameters:**
+
 - `title` (string, required)
 - `description` (string, required)
 - `difficulty` (string, required) - easy, medium, hard
@@ -350,6 +403,7 @@ POST /admin/problem/create
 - `csrf_token` (string, required)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -363,6 +417,7 @@ POST /admin/problem/create
 ## Error Responses
 
 ### 400 Bad Request
+
 ```json
 {
   "success": false,
@@ -371,6 +426,7 @@ POST /admin/problem/create
 ```
 
 ### 401 Unauthorized
+
 ```json
 {
   "success": false,
@@ -379,6 +435,7 @@ POST /admin/problem/create
 ```
 
 ### 403 Forbidden
+
 ```json
 {
   "success": false,
@@ -387,6 +444,7 @@ POST /admin/problem/create
 ```
 
 ### 429 Too Many Requests
+
 ```json
 {
   "success": false,
@@ -395,6 +453,7 @@ POST /admin/problem/create
 ```
 
 ### 500 Server Error
+
 ```json
 {
   "success": false,
@@ -406,18 +465,18 @@ POST /admin/problem/create
 
 ## Status Codes
 
-| Code | Description |
-|------|-------------|
-| 200 | OK |
-| 201 | Created |
-| 400 | Bad Request |
-| 401 | Unauthorized |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 405 | Method Not Allowed |
-| 422 | Unprocessable Entity |
-| 429 | Too Many Requests |
-| 500 | Internal Server Error |
+| Code | Description           |
+| ---- | --------------------- |
+| 200  | OK                    |
+| 201  | Created               |
+| 400  | Bad Request           |
+| 401  | Unauthorized          |
+| 403  | Forbidden             |
+| 404  | Not Found             |
+| 405  | Method Not Allowed    |
+| 422  | Unprocessable Entity  |
+| 429  | Too Many Requests     |
+| 500  | Internal Server Error |
 
 ---
 
@@ -440,15 +499,15 @@ POST /admin/problem/create
 
 ## Submission Status
 
-| Status | Description |
-|--------|-------------|
-| Pending | Being compiled/executed |
-| Accepted | Correct solution |
-| Wrong Answer | Output doesn't match expected |
-| Runtime Error | Program crashed |
-| Time Limit Exceeded | Execution exceeded time limit |
+| Status                | Description                     |
+| --------------------- | ------------------------------- |
+| Pending               | Being compiled/executed         |
+| Accepted              | Correct solution                |
+| Wrong Answer          | Output doesn't match expected   |
+| Runtime Error         | Program crashed                 |
+| Time Limit Exceeded   | Execution exceeded time limit   |
 | Memory Limit Exceeded | Execution exceeded memory limit |
-| Compilation Error | Failed to compile |
+| Compilation Error     | Failed to compile               |
 
 ---
 
