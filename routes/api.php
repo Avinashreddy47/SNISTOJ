@@ -22,14 +22,18 @@ Router::get('/user/profile', 'UserController@showProfile', ['middleware' => [Aut
 Router::post('/user/update', 'UserController@updateProfile', ['middleware' => [AuthMiddleware::class . '@requireAuth', CSRFMiddleware::class . '@require']]);
 
 // Problem routes
-Router::get('/problems', 'ProblemController@index');
-Router::get('/problem/:id', 'ProblemController@show');
+Router::get('/problems', 'ProblemController@index', ['middleware' => [AuthMiddleware::class . '@requireAuth']]);
+Router::get('/problem/:id', 'ProblemController@show', ['middleware' => [AuthMiddleware::class . '@requireAuth']]);
 Router::post('/problem/submit', 'ProblemController@submit', ['middleware' => [AuthMiddleware::class . '@requireAuth', CSRFMiddleware::class . '@require']]);
 
 // Contest routes
-Router::get('/contests', 'ContestController@index');
-Router::get('/contest/:id', 'ContestController@show');
+Router::get('/contests', 'ContestController@index', ['middleware' => [AuthMiddleware::class . '@requireAuth']]);
+Router::get('/contest/:id', 'ContestController@show', ['middleware' => [AuthMiddleware::class . '@requireAuth']]);
 Router::post('/contest/register', 'ContestController@register', ['middleware' => [AuthMiddleware::class . '@requireAuth', CSRFMiddleware::class . '@require']]);
+
+// Compiler route
+Router::get('/compiler', 'CompilerController@index', ['middleware' => [AuthMiddleware::class . '@requireAuth']]);
+Router::post('/compiler/run', 'CompilerController@run', ['middleware' => [AuthMiddleware::class . '@requireAuth', CSRFMiddleware::class . '@require']]);
 
 // Admin routes
 Router::get('/admin/dashboard', 'AdminController@dashboard', ['middleware' => [AuthMiddleware::class . '@requireAuth', 'AdminMiddleware@requireAdmin']]);

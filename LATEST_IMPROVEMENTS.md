@@ -3,6 +3,7 @@
 ## Recent Additions
 
 ### 1. **View Templates** (4 files)
+
 - `src/views/home/index.php` - Landing page with features overview
 - `src/views/auth/login.php` - Styled login form with CSRF protection
 - `src/views/auth/register.php` - Registration form with validation fields
@@ -10,6 +11,7 @@
 - `src/views/errors/404.php` - 404 error page
 
 ### 2. **Database Schema** (1 file)
+
 - `database/schema.sql` - Complete schema for both databases (vlabproblem, vlabreg)
   - User tables with roles and status
   - Problem and test case tables
@@ -19,11 +21,13 @@
   - Sample data with admin user
 
 ### 3. **Unit Tests** (2 files)
+
 - `tests/UtilsTest.php` - 20 test cases for Security, Validator, and Logger
 - `tests/Services/UserServiceTest.php` - User service and model tests
 - `phpunit.xml` - PHPUnit configuration with coverage settings
 
 ### 4. **Additional Controllers** (4 files)
+
 - `src/controllers/HomeController.php` - Home page handler
 - `src/controllers/AuthController.php` - Complete auth flow with validation
 - `src/controllers/ProblemController.php` - Problem-related operations
@@ -31,9 +35,11 @@
 - `src/controllers/AdminController.php` - Admin operations
 
 ### 5. **Middleware**
+
 - `src/middleware/AdminMiddleware.php` - Admin role verification
 
 ### 6. **Configuration Files**
+
 - `.env` - Environment configuration template
 - `phpunit.xml` - Test runner configuration
 
