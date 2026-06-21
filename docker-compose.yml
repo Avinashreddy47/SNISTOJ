@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: snistoj_php
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./logs:/var/www/html/logs
+    environment:
+      - DB_HOST=mysql_problems
+      - DB_USER=snistoj
+      - DB_PASSWORD=${DB_PASSWORD:-root}
+      - DB_PROBLEMS=vlabproblem
+      - DB_USERS=vlabreg
+      - APP_ENV=development
+      - APP_DEBUG=true
+    depends_on:
+      - mysql_problems
+      - mysql_users
+    networks:
+      - snistoj_network
+    restart: unless-stopped
+
+  mysql_problems:
+    image: mysql:8.0
+    container_name: snistoj_mysql_problems
+    environment:
+      MYSQL_DATABASE: vlabproblem
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: snistoj
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+    volumes:
+      - mysql_problems_data:/var/lib/mysql
+    networks:
+      - snistoj_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql_users:
+    image: mysql:8.0
+    container_name: snistoj_mysql_users
+    environment:
+      MYSQL_DATABASE: vlabreg
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: snistoj
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+    volumes:
+      - mysql_users_data:/var/lib/mysql
+    networks:
+      - snistoj_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: snistoj_phpmyadmin
+    environment:
+      PMA_HOST: mysql_problems
+      PMA_USER: snistoj
+      PMA_PASSWORD: ${DB_PASSWORD:-root}
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql_problems
+    networks:
+      - snistoj_network
+    restart: unless-stopped
+
+volumes:
+  mysql_problems_data:
+  mysql_users_data:
+
+networks:
+  snistoj_network:
+    driver: bridge
