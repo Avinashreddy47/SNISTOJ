@@ -3,6 +3,7 @@
 namespace SNISTOJ\Middleware;
 
 use SNISTOJ\Utils\Logger;
+use SNISTOJ\Utils\Response;
 
 /**
  * Admin Middleware
@@ -17,8 +18,7 @@ class AdminMiddleware
                 'user_id' => $_SESSION['user_id'] ?? null,
                 'ip' => $_SERVER['REMOTE_ADDR'],
             ]);
-            http_response_code(403);
-            die('Access denied');
+            Response::forbidden('Admin access required');
         }
     }
 }

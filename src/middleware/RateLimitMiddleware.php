@@ -3,6 +3,7 @@
 namespace SNISTOJ\Middleware;
 
 use SNISTOJ\Utils\Security;
+use SNISTOJ\Utils\Response;
 
 /**
  * Rate Limit Middleware
@@ -29,8 +30,7 @@ class RateLimitMiddleware
     public static function enforce($identifier, $limit = 10, $window = 60)
     {
         if (!self::check($identifier, $limit, $window)) {
-            http_response_code(429);
-            die('Too many requests. Please try again later.');
+            Response::rateLimitExceeded();
         }
     }
 }

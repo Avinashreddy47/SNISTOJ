@@ -3,6 +3,7 @@
 namespace SNISTOJ\Routing;
 
 use SNISTOJ\Utils\Logger;
+use SNISTOJ\Utils\Response;
 
 /**
  * Router
@@ -74,8 +75,7 @@ class Router
         }
 
         // 404
-        http_response_code(404);
-        return require_once dirname(__DIR__) . '/views/errors/404.php';
+        Response::notFound('Route not found');
     }
 
     /**
@@ -111,8 +111,7 @@ class Router
         foreach ($route['middlewares'] as $middleware) {
             if (is_callable($middleware)) {
                 if ($middleware() === false) {
-                    http_response_code(403);
-                    die('Middleware blocked request');
+                    Response::forbidden('Middleware blocked request');
                 }
             }
         }
@@ -123,8 +122,7 @@ class Router
 
         if (!class_exists($className)) {
             Logger::error('Controller not found', ['class' => $className]);
-            http_response_code(500);
-            die('Controller not found');
+            Response::serverError('Controller not found');
         }
 
         $controller = new $className();

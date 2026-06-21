@@ -4,6 +4,7 @@ namespace SNISTOJ\Middleware;
 
 use SNISTOJ\Utils\Security;
 use SNISTOJ\Utils\Logger;
+use SNISTOJ\Utils\Response;
 
 /**
  * CSRF Middleware
@@ -41,8 +42,7 @@ class CSRFMiddleware
     public static function require()
     {
         if (!self::handle()) {
-            http_response_code(403);
-            die('CSRF token validation failed');
+            Response::forbidden('CSRF token validation failed');
         }
     }
 
