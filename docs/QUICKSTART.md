@@ -67,7 +67,7 @@ PhpMyAdmin: http://localhost:8081
 mysql -u snistoj -p vlabreg
 
 # Create admin user
-INSERT INTO users (username, password, email, role) 
+INSERT INTO users (username, password, email, role)
 VALUES ('admin', '$2y$12$...', 'admin@example.com', 'admin');
 ```
 

@@ -9,6 +9,7 @@ This document outlines the security measures implemented in SNISTOJ and best pra
 ### 1. Prepared Statements (SQL Injection Prevention)
 
 **BEFORE (Vulnerable):**
+
 ```php
 // NEVER DO THIS
 $username = $_POST['username'];
@@ -17,6 +18,7 @@ $result = mysqli_query($conn, $query);
 ```
 
 **AFTER (Secure):**
+
 ```php
 use SNISTOJ\Config\Database;
 
@@ -27,6 +29,7 @@ $user = $db->selectOne('SELECT * FROM users WHERE username = ?', [$username]);
 ### 2. Password Security (Bcrypt Hashing)
 
 **BEFORE (Vulnerable):**
+
 ```php
 // NEVER DO THIS
 $password = md5($_POST['password']); // MD5 is broken
@@ -35,6 +38,7 @@ $password = $_POST['password']; // Plaintext storage
 ```
 
 **AFTER (Secure):**
+
 ```php
 use SNISTOJ\Utils\Security;
 
@@ -49,14 +53,16 @@ if (Security::verifyPassword($_POST['password'], $storedHash)) {
 ### 3. CSRF Token Protection
 
 **BEFORE (Vulnerable):**
+
 ```html
 <!-- NEVER DO THIS -->
 <form method="POST" action="update.php">
-    <input type="text" name="username">
+  <input type="text" name="username" />
 </form>
 ```
 
 **AFTER (Secure):**
+
 ```php
 <?php
 use SNISTOJ\Utils\Security;
@@ -77,6 +83,7 @@ if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
 ### 4. Input Validation & Sanitization
 
 **BEFORE (Vulnerable):**
+
 ```php
 // NEVER DO THIS
 $data = $_POST; // Direct use of user input
@@ -84,6 +91,7 @@ echo $data['comment']; // XSS vulnerability
 ```
 
 **AFTER (Secure):**
+
 ```php
 use SNISTOJ\Utils\Validator;
 use SNISTOJ\Utils\Security;
@@ -122,6 +130,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 ### 6. Session Security
 
 **Configuration in bootstrap.php:**
+
 ```php
 ini_set('session.cookie_httponly', 1);   // Prevent JS access
 ini_set('session.cookie_secure', 1);     // HTTPS only
@@ -131,6 +140,7 @@ ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
 ### 7. Rate Limiting
 
 **Prevent Brute Force Attacks:**
+
 ```php
 use SNISTOJ\Utils\Security;
 
@@ -146,6 +156,7 @@ if (Security::isRateLimited('login', 10, 60)) {
 ### 8. Secure Logging
 
 **Log security events:**
+
 ```php
 use SNISTOJ\Utils\Logger;
 
@@ -200,6 +211,7 @@ Logger::warning('Failed login attempt', [
 ### Example 1: Converting Database Queries
 
 **Original Code (From old config.php):**
+
 ```php
 $con = mysqli_connect($host, $user, $pass, $db);
 $query = "SELECT * FROM users WHERE username = '" . $_POST['username'] . "'";
@@ -207,6 +219,7 @@ $result = mysqli_query($con, $query);
 ```
 
 **Refactored Code:**
+
 ```php
 <?php
 require_once 'bootstrap.php';
@@ -217,7 +230,7 @@ use SNISTOJ\Utils\Logger;
 try {
     $db = Database::getInstance('users');
     $user = $db->selectOne('SELECT * FROM users WHERE username = ?', [$_POST['username']]);
-    
+
     if ($user) {
         Logger::info('User found', ['username' => $_POST['username']]);
     }
@@ -230,6 +243,7 @@ try {
 ### Example 2: Converting Authentication
 
 **Original Code:**
+
 ```php
 session_start();
 if (!isset($_SESSION["un"])) {
@@ -238,6 +252,7 @@ if (!isset($_SESSION["un"])) {
 ```
 
 **Refactored Code:**
+
 ```php
 <?php
 require_once 'bootstrap.php';
@@ -263,12 +278,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ### Example 3: Converting Form Submission
 
 **Original Code:**
+
 ```php
 <?php
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    
+
     // No validation, no hashing
     $query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
     mysqli_query($con, $query);
@@ -283,6 +299,7 @@ if (isset($_POST['submit'])) {
 ```
 
 **Refactored Code:**
+
 ```php
 <?php
 require_once 'bootstrap.php';
@@ -336,26 +353,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ## 🚨 Common Vulnerabilities & Fixes
 
 ### SQL Injection
+
 **Risk**: Attacker modifies query logic  
 **Fix**: Use prepared statements
 
 ### XSS (Cross-Site Scripting)
+
 **Risk**: Malicious scripts in output  
 **Fix**: Sanitize output with `htmlspecialchars()`, set CSP headers
 
 ### CSRF (Cross-Site Request Forgery)
+
 **Risk**: Unauthorized actions on behalf of user  
 **Fix**: Implement CSRF tokens
 
 ### Broken Authentication
+
 **Risk**: Weak password storage, session issues  
 **Fix**: Use bcrypt, secure session cookies
 
 ### Insecure Direct Object References
+
 **Risk**: Access unauthorized data  
 **Fix**: Implement authorization checks in services
 
 ### Security Misconfiguration
+
 **Risk**: Debug mode on, default credentials  
 **Fix**: Proper .env configuration, security checklist
 

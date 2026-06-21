@@ -164,11 +164,13 @@ LOG_LEVEL=info
 The system uses two separate MySQL databases:
 
 ### `vlabproblem` - Problems Database
+
 - `problems` - Problem statements and test cases
 - `submissions` - Code submissions
 - `test_cases` - Test cases for problems
 
 ### `vlabreg` - User Database
+
 - `users` - User accounts and profiles
 - `user_submissions` - User submission tracking
 - `sessions` - Session management
@@ -205,21 +207,25 @@ sudo chown -R www-data:www-data /var/www/snistoj
 ## 📝 API Documentation
 
 ### Authentication
+
 - User registration and login endpoints
 - Session-based authentication
 - CSRF token generation
 
 ### Problem Endpoints
+
 - GET `/api/problems` - List all problems
 - GET `/api/problems/{id}` - Get problem details
 - POST `/api/submit` - Submit solution
 
 ### Contest Endpoints
+
 - GET `/api/contests` - List contests
 - GET `/api/contests/{id}` - Get contest details
 - POST `/api/contest/register` - Register for contest
 
 ### User Endpoints
+
 - GET `/api/user/profile` - Get user profile
 - POST `/api/user/update` - Update user profile
 - GET `/api/user/submissions` - Get user submissions
@@ -237,6 +243,7 @@ CRITICAL - Critical system failures
 ```
 
 View recent logs:
+
 ```php
 use SNISTOJ\Utils\Logger;
 $logs = Logger::getRecentLogs(50); // Get last 50 log entries
@@ -255,6 +262,7 @@ $logs = Logger::getRecentLogs(50); // Get last 50 log entries
 ## 🐛 Troubleshooting
 
 ### Database Connection Issues
+
 ```bash
 # Check database container logs
 docker-compose logs mysql_problems
@@ -264,6 +272,7 @@ docker-compose logs mysql_problems
 ```
 
 ### Permission Denied Errors
+
 ```bash
 # Fix file permissions
 chmod -R 755 src/ config/
@@ -272,6 +281,7 @@ chown -R www-data:www-data /var/www/html
 ```
 
 ### Compilation Timeout
+
 - Increase `COMPILER_TIMEOUT` in `.env`
 - Check server resources with `docker stats`
 

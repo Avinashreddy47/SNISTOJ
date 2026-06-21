@@ -31,17 +31,20 @@ SNISTOJ follows a **layered architecture** pattern with clear separation of conc
 ### `/config` - Configuration Management
 
 **Files:**
+
 - `Environment.php` - Loads `.env` variables
 - `Config.php` - Application configuration manager
 - `Database.php` - Secure database layer
 
 **Responsibilities:**
+
 - Manage environment variables
 - Provide centralized configuration access
 - Handle database connections with connection pooling
 - Use prepared statements for all queries
 
 **Usage:**
+
 ```php
 use SNISTOJ\Config\Config;
 use SNISTOJ\Config\Database;
@@ -57,13 +60,15 @@ $result = $db->selectAll('SELECT * FROM users WHERE active = ?', [1]);
 
 ### `/src/controllers` - Request Handlers
 
-**Responsibility:** 
+**Responsibility:**
+
 - Handle HTTP requests
 - Call appropriate services
 - Return responses to users
 - Validate input and check permissions
 
 **Pattern:**
+
 ```php
 namespace SNISTOJ\Controllers;
 
@@ -73,7 +78,7 @@ class UserController {
         // 2. Call service
         // 3. Return response
     }
-    
+
     public function login() {
         // Handle login logic
     }
@@ -83,11 +88,13 @@ class UserController {
 ### `/src/models` - Data Models
 
 **Responsibility:**
+
 - Represent database entities
 - Provide data structure and validation
 - Implement repository pattern
 
 **Example:**
+
 ```php
 namespace SNISTOJ\Models;
 
@@ -95,7 +102,7 @@ class User {
     public $id;
     public $username;
     public $email;
-    
+
     public function save() { }
     public function delete() { }
 }
@@ -104,12 +111,14 @@ class User {
 ### `/src/services` - Business Logic
 
 **Responsibility:**
+
 - Implement business rules
 - Coordinate between models
 - Handle transactions
 - Call utilities
 
 **Example:**
+
 ```php
 namespace SNISTOJ\Services;
 
@@ -126,6 +135,7 @@ class UserService {
 ### `/src/utils` - Utility Classes
 
 **Security.php:**
+
 - CSRF token generation/verification
 - Password hashing (bcrypt)
 - Input sanitization
@@ -133,18 +143,21 @@ class UserService {
 - Rate limiting
 
 **Logger.php:**
+
 - Log application events
 - Support multiple log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 - Query recent logs
 - Clean old logs
 
 **Validator.php:**
+
 - Validate input data
 - Support chainable validation rules
 - Collect validation errors
 - Support custom messages
 
 **Usage:**
+
 ```php
 use SNISTOJ\Utils\Security;
 use SNISTOJ\Utils\Validator;
@@ -172,6 +185,7 @@ Logger::info('User registered', ['username' => 'john']);
 ### `/src/middleware` - Request Middleware
 
 **Responsibility:**
+
 - Authenticate requests
 - Check permissions
 - Validate CSRF tokens
@@ -179,6 +193,7 @@ Logger::info('User registered', ['username' => 'john']);
 - Logging
 
 **Pattern:**
+
 ```php
 namespace SNISTOJ\Middleware;
 
@@ -194,6 +209,7 @@ class AuthMiddleware {
 ### `/src/views` - Templates
 
 **Responsibility:**
+
 - Display data to users
 - Render HTML
 - Include UI components
@@ -201,6 +217,7 @@ class AuthMiddleware {
 ### `/public` - Static Assets
 
 **Structure:**
+
 ```
 public/
 ├── css/      - Stylesheets
@@ -236,24 +253,28 @@ public/
 ### Layers of Protection
 
 **1. Input Layer**
+
 - HTML sanitization
 - Type casting
 - Prepared statements
 - Validator framework
 
 **2. Processing Layer**
+
 - CSRF tokens
 - Rate limiting
 - Session validation
 - Permission checks
 
 **3. Data Layer**
+
 - Encrypted passwords (bcrypt)
 - Prepared statements (prevent SQL injection)
 - Transactions (data consistency)
 - Audit logging
 
 **4. Output Layer**
+
 - HTML entity encoding
 - Content Security Policy headers
 - XSS protection headers
@@ -263,12 +284,14 @@ public/
 ### Two-Database Architecture
 
 **Problems Database (`vlabproblem`):**
+
 - `problems` - Problem definitions
 - `testcases` - Test cases
 - `submissions` - Code submissions
 - `standings` - Contest standings
 
 **Users Database (`vlabreg`):**
+
 - `users` - User accounts
 - `sessions` - User sessions
 - `roles` - User roles/permissions
@@ -323,6 +346,7 @@ throw new AuthorizationException('Insufficient permissions');
 ### Global Error Handler
 
 The `ExceptionHandler` class catches all exceptions:
+
 - Logs the error
 - Displays appropriate error message
 - Returns HTTP error code
@@ -340,6 +364,7 @@ The `ExceptionHandler` class catches all exceptions:
 ### Log Storage
 
 Logs are stored in `/logs/app.log` with:
+
 - Timestamp
 - Log level
 - Message
@@ -388,6 +413,7 @@ Logger::clearOldLogs(30); // Older than 30 days
 ## Testing Architecture
 
 ### Unit Tests
+
 ```php
 // Test individual components
 class SecurityTest extends PHPUnit_TestCase {
@@ -396,6 +422,7 @@ class SecurityTest extends PHPUnit_TestCase {
 ```
 
 ### Integration Tests
+
 ```php
 // Test component interactions
 class UserRegistrationTest extends PHPUnit_TestCase {

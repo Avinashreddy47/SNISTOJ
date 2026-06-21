@@ -3,6 +3,7 @@
 Thank you for your interest in contributing to SNISTOJ! We welcome all contributions, from bug reports to feature implementations.
 
 ## Table of Contents
+
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
@@ -16,6 +17,7 @@ Thank you for your interest in contributing to SNISTOJ! We welcome all contribut
 ## Code of Conduct
 
 We are committed to providing a welcoming and inclusive environment for all contributors. Please:
+
 - Be respectful of differing opinions
 - Focus on constructive criticism
 - Report inappropriate behavior to maintainers
@@ -123,14 +125,14 @@ use SNISTOJ\Utils\Logger;
 
 /**
  * Class descriptive name
- * 
+ *
  * Detailed description of what this class does.
  */
 class YourService
 {
     /**
      * Method description
-     * 
+     *
      * @param string $parameter Description
      * @return bool Result description
      * @throws \Exception If something goes wrong
@@ -157,7 +159,7 @@ class YourService
 - **Methods**: camelCase (getUserById, validateInput)
 - **Variables**: camelCase (userName, userId)
 - **Constants**: UPPER_SNAKE_CASE (MAX_LOGIN_ATTEMPTS, DB_TIMEOUT)
-- **Private/Protected**: Prefix with underscore (_privateMethod)
+- **Private/Protected**: Prefix with underscore (\_privateMethod)
 
 ### Code Style
 
@@ -172,7 +174,7 @@ public function example()
 
 // Opening braces on same line
 class MyClass {
-    
+
 }
 
 // Space after keywords
@@ -191,10 +193,10 @@ Every class and public method should have PHPDoc:
 ```php
 /**
  * Get user by ID
- * 
+ *
  * Retrieves a user from the database by their ID.
  * Returns null if user not found.
- * 
+ *
  * @param int $userId The user ID
  * @return array|null User data or null
  * @throws \Exception If database connection fails
@@ -220,6 +222,7 @@ public function getUserById($userId)
 ```
 
 ### Type
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation changes
@@ -256,6 +259,7 @@ Fixes #456
 ### Before Submitting
 
 1. **Rebase on upstream main**
+
    ```bash
    git fetch upstream
    git rebase upstream/main
@@ -263,11 +267,13 @@ Fixes #456
    ```
 
 2. **Run tests**
+
    ```bash
    composer test
    ```
 
 3. **Check code style**
+
    ```bash
    composer lint
    ```
@@ -281,18 +287,22 @@ Fixes #456
 
 ```markdown
 ## Description
+
 Brief description of changes.
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 Describe testing done.
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Comments are clear and helpful
 - [ ] Tests added/updated
@@ -300,6 +310,7 @@ Describe testing done.
 - [ ] No breaking changes
 
 ## Related Issues
+
 Closes #123
 ```
 
@@ -361,7 +372,7 @@ class UserServiceTest extends TestCase
     public function testValidationFails()
     {
         $this->expectException(\InvalidArgumentException::class);
-        
+
         $this->userService->createUser([
             'username' => '', // Empty username
             'email' => 'invalid-email',
@@ -382,6 +393,7 @@ class UserServiceTest extends TestCase
 ## Areas for Contribution
 
 ### High Priority
+
 - [ ] Unit test coverage
 - [ ] Documentation improvements
 - [ ] Security audits
@@ -389,12 +401,14 @@ class UserServiceTest extends TestCase
 - [ ] Bug fixes
 
 ### Medium Priority
+
 - [ ] New language support for compiler
 - [ ] Enhanced problem management UI
 - [ ] Better contest management
 - [ ] User statistics dashboard
 
 ### Future Features
+
 - [ ] REST API endpoints
 - [ ] Real-time code execution feedback
 - [ ] Plagiarism detection

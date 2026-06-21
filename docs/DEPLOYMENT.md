@@ -1,6 +1,7 @@
 # Deployment Guide
 
 ## Table of Contents
+
 1. [Docker Deployment](#docker-deployment)
 2. [VPS/Cloud Deployment](#vpscloud-deployment)
 3. [Production Configuration](#production-configuration)
@@ -12,6 +13,7 @@
 ## Docker Deployment
 
 ### Prerequisites
+
 - Docker and Docker Compose installed
 - Domain name (for production)
 
@@ -102,6 +104,7 @@ docker-compose down -v
 ## VPS/Cloud Deployment
 
 ### Server Requirements
+
 - Ubuntu 20.04+ or CentOS 8+
 - 2GB RAM minimum
 - 20GB storage
@@ -150,14 +153,14 @@ sudo tee /etc/apache2/sites-available/snistoj.conf > /dev/null <<EOF
 <VirtualHost *:80>
     ServerName yourdomain.com
     ServerAlias www.yourdomain.com
-    
+
     DocumentRoot /var/www/snistoj/public
-    
+
     <Directory /var/www/snistoj/public>
         AllowOverride All
         Require all granted
     </Directory>
-    
+
     ErrorLog \${APACHE_LOG_DIR}/snistoj_error.log
     CustomLog \${APACHE_LOG_DIR}/snistoj_access.log combined
 </VirtualHost>
@@ -185,21 +188,21 @@ sudo tee /etc/nginx/sites-available/snistoj > /dev/null <<EOF
 server {
     listen 80;
     server_name yourdomain.com www.yourdomain.com;
-    
+
     root /var/www/snistoj/public;
     index index.php;
-    
+
     location / {
         try_files \$uri \$uri/ /index.php?\$query_string;
     }
-    
+
     location ~ \.php$ {
         fastcgi_pass unix:/run/php/php8.2-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
     }
-    
+
     location ~ /\. {
         deny all;
     }
@@ -308,18 +311,18 @@ sudo systemctl start certbot.timer
 <VirtualHost *:443>
     ServerName yourdomain.com
     ServerAlias www.yourdomain.com
-    
+
     DocumentRoot /var/www/snistoj/public
-    
+
     SSLEngine on
     SSLCertificateFile /etc/letsencrypt/live/yourdomain.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/yourdomain.com/privkey.pem
-    
+
     # Security headers
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "DENY"
-    
+
     <Directory /var/www/snistoj/public>
         AllowOverride All
         Require all granted
